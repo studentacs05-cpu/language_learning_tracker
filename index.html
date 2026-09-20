@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Un espacio compartido para practicar español y chino.">
+  <meta name="theme-color" content="#1f5c4a">
+  <title>Entre palabras · 词语之间</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%231f5c4a'/%3E%3Cpath d='M8 10h16M8 16h10M8 22h7' stroke='%23fff6df' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="config.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <section id="auth-view" class="auth-shell">
+    <div class="auth-card">
+      <div class="mark">词 · Ñ</div>
+      <p class="eyebrow">SOLO PARA DOS · 仅限两人</p>
+      <h1>Entre palabras<br><span>词语之间</span></h1>
+      <p>Un rincón para aprender juntos.<br>一起学习的一方小天地。</p>
+      <form id="login-form">
+        <label>Correo electrónico · 电子邮箱<input id="email" type="email" required autocomplete="username"></label>
+        <label>Contraseña · 密码<input id="password" type="password" required autocomplete="current-password" minlength="6"></label>
+        <button type="submit">Entrar · 登录</button>
+      </form>
+      <p class="micro">La sesión queda guardada en este dispositivo.<br>此设备会记住你的登录状态。</p>
+    </div>
+  </section>
+
+  <div id="app-view" class="app hidden">
+    <aside class="sidebar">
+      <div class="brand"><span class="mark small">词·Ñ</span><strong>Entre palabras</strong></div>
+      <nav id="nav">
+        <button class="active" data-view="today">☀ <span>Hoy · 今日</span></button>
+        <button data-view="history">◷ <span>Historial · 历史</span></button>
+        <button data-view="vocabulary">字 <span>Vocabulario · 词汇</span></button>
+        <button data-view="resources">⌁ <span>Recursos · 资源</span></button>
+        <button data-view="dashboard">▦ <span>Constancia · 坚持</span></button>
+      </nav>
+      <div class="user-panel">
+        <div class="avatar" id="avatar">?</div>
+        <div><strong id="user-name">—</strong><small id="learning-label">—</small></div>
+        <button id="logout" title="Salir · 退出">↗</button>
+      </div>
+    </aside>
+
+    <main>
+      <header class="topbar"><button id="menu" aria-label="Menú · 菜单">☰</button><div><span id="date-line"></span><strong id="greeting"></strong></div><span class="sync" id="sync-state">● Sincronizado · 已同步</span></header>
+
+      <section id="view-today" class="view active">
+        <div class="section-head"><div><p class="eyebrow">PRÁCTICA DE HOY · 今日练习</p><h2>Una pequeña práctica cuenta.</h2><p>每一次小小的练习，都算数。</p></div><button class="primary" id="new-task">＋ Añadir · 添加</button></div>
+        <div id="task-composer" class="card composer hidden">
+          <div class="composer-head"><h3>Nueva práctica · 新练习</h3><button class="icon" data-close="task-composer">×</button></div>
+          <label>Título · 标题<input id="task-title" maxlength="80" placeholder="Ej.: Mi fin de semana / 例如：我的周末"></label>
+          <label>Idioma de práctica · 练习语言<select id="task-language"><option value="es">Español · 西班牙语</option><option value="zh">中文 · Chino</option></select></label>
+          <div class="editor-label">Texto · 文字</div>
+          <div class="toolbar" aria-label="Formato"><button type="button" data-cmd="bold"><b>B</b></button><button type="button" data-cmd="hiliteColor" data-val="#fff1a8">▰</button><button type="button" data-cmd="foreColor" data-val="#b73535">A</button></div>
+          <div id="task-text" class="editor" contenteditable="true" data-placeholder="Escribe aquí… / 在这里写…"></div>
+          <div class="file-row"><label class="file-chip">♫ Audio · 音频<input id="task-audio" type="file" accept="audio/*" hidden></label><label class="file-chip">▧ Foto · 图片<input id="task-image" type="file" accept="image/*" hidden></label><span id="file-summary"></span></div>
+          <button class="primary" id="save-task">Guardar · 保存</button>
+        </div>
+        <div id="today-tasks" class="feed"></div>
+      </section>
+
+      <section id="view-history" class="view"><div class="section-head"><div><p class="eyebrow">MIRAR ATRÁS · 回顾</p><h2>Historial · 历史记录</h2></div><input id="history-date" type="date"></div><div id="history-tasks" class="feed"></div></section>
+      <section id="view-vocabulary" class="view"><div class="section-head"><div><p class="eyebrow">LISTA COMPARTIDA · 共享清单</p><h2>Vocabulario · 词汇</h2></div><button class="primary" id="new-word">＋ Palabra · 添加词汇</button></div><div id="word-form" class="card compact hidden"><input id="word-term" placeholder="Palabra · 单词"><select id="word-language"><option value="es">Español</option><option value="zh">中文</option></select><input id="word-pronunciation" placeholder="Pronunciación lenta · 慢速发音"><input id="word-pinyin" placeholder="Pinyin（中文必填）"><input id="word-image" type="file" accept="image/*"><button class="primary" id="save-word">Guardar · 保存</button></div><div id="word-list" class="grid-list"></div></section>
+      <section id="view-resources" class="view"><div class="section-head"><div><p class="eyebrow">BIBLIOTECA · 资料库</p><h2>Recursos · 学习资源</h2></div><button class="primary" id="new-resource">＋ Recurso · 添加资源</button></div><div id="resource-form" class="card compact hidden"><input id="resource-title" placeholder="Título · 标题"><input id="resource-url" type="url" placeholder="https://"><select id="resource-category"><option>Libro · 书籍</option><option>Video · 视频</option><option>Herramienta · 工具</option><option>Otro · 其他</option></select><textarea id="resource-note" placeholder="Nota · 备注"></textarea><button class="primary" id="save-resource">Guardar · 保存</button></div><div id="resource-list" class="grid-list"></div></section>
+      <section id="view-dashboard" class="view"><div class="section-head"><div><p class="eyebrow">PASO A PASO · 一步一步</p><h2>Constancia · 学习坚持</h2><p>Comparar para animarnos, no para competir. · 对比是为了互相鼓励，不是比赛。</p></div></div><div id="stats" class="stats"></div><div class="card"><h3>Últimos 14 días · 最近14天</h3><div id="heatmap" class="heatmap"></div></div></section>
+    </main>
+  </div>
+
+  <template id="task-template"><article class="card task"><div class="task-meta"><span class="author"></span><time></time><span class="lang"></span></div><h3></h3><div class="task-body"></div><div class="attachments"></div><div class="ai-box hidden"><strong>Ayuda IA · AI 辅助</strong><div></div></div><div class="task-actions"><button class="ghost comments-toggle">Comentarios · 评论 <span></span></button><button class="ghost ai-action">✦ Revisar con IA · AI 修改</button><button class="danger delete-task hidden">Eliminar · 删除</button></div><div class="comments hidden"><div class="comment-list"></div><form class="comment-form"><input placeholder="Escribe una corrección o ánimo… / 写下修改或鼓励…" required><button>Enviar · 发送</button></form></div></article></template>
+</body>
+</html>
