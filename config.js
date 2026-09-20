@@ -1,5 +1,5 @@
 window.TRACKER_CONFIG = {
-  supabaseUrl: "csfrpadcaanayhjtudxy",
+  supabaseUrl: "https://csfrpadcaanayhjtudxy.supabase.co",
   supabaseAnonKey: "sb_publishable_MObo0TNcYbYElSSXAXX65w_h8QojajY",
   aiEnabled: false
 };
