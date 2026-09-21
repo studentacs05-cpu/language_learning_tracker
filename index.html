@@ -39,15 +39,20 @@
         <button data-view="resources">⌁ <span>Recursos · 资源</span></button>
         <button data-view="dashboard">▦ <span>Constancia · 坚持</span></button>
       </nav>
+      <div class="companion-art" aria-hidden="true">
+        <img src="assets/learning-companions.webp" alt="">
+        <p>Seguimos juntos · 一起继续</p>
+      </div>
       <div class="user-panel">
         <div class="avatar" id="avatar">?</div>
         <div><strong id="user-name">—</strong><small id="learning-label">—</small></div>
         <button id="logout" title="Salir · 退出">↗</button>
       </div>
     </aside>
+    <button id="nav-overlay" aria-label="Cerrar menú · 关闭菜单"></button>
 
     <main>
-      <header class="topbar"><button id="menu" aria-label="Menú · 菜单">☰</button><div><span id="date-line"></span><strong id="greeting"></strong></div><span class="sync" id="sync-state">● Sincronizado · 已同步</span></header>
+      <header class="topbar"><button id="menu" aria-label="Menú · 菜单">☰</button><div><span id="date-line"></span><strong id="greeting"></strong></div><span class="sync" id="sync-state">● Sincronizado · 已同步</span><button id="theme-toggle" class="theme-toggle" aria-label="Modo oscuro · 深色模式" title="Modo oscuro · 深色模式">☾</button></header>
 
       <section id="view-today" class="view active">
         <div class="section-head"><div><p class="eyebrow">PRÁCTICA DE HOY · 今日练习</p><h2>Una pequeña práctica cuenta.</h2><p>每一次小小的练习，都算数。</p></div><button class="primary" id="new-task">＋ Añadir · 添加</button></div>
@@ -58,14 +63,19 @@
           <div class="editor-label">Texto · 文字</div>
           <div class="toolbar" aria-label="Formato"><button type="button" data-cmd="bold"><b>B</b></button><button type="button" data-cmd="hiliteColor" data-val="#fff1a8">▰</button><button type="button" data-cmd="foreColor" data-val="#b73535">A</button></div>
           <div id="task-text" class="editor" contenteditable="true" data-placeholder="Escribe aquí… / 在这里写…"></div>
-          <div class="file-row"><label class="file-chip">♫ Audio · 音频<input id="task-audio" type="file" accept="audio/*" hidden></label><label class="file-chip">▧ Foto · 图片<input id="task-image" type="file" accept="image/*" hidden></label><span id="file-summary"></span></div>
+          <div class="media-box">
+            <span class="media-title">Audio · 音频</span>
+            <div class="file-row"><button type="button" class="record-btn" id="task-record">● Grabar · 录音</button><span id="task-record-time" class="record-time">00:00</span><label class="file-chip">↑ Archivo · 上传<input id="task-audio" type="file" accept="audio/*" hidden></label></div>
+            <audio id="task-record-preview" class="record-preview hidden" controls></audio>
+          </div>
+          <div class="file-row"><label class="file-chip camera-chip">▧ Cámara o foto · 拍照或图片<input id="task-image" type="file" accept="image/*" capture="environment" hidden></label><span id="file-summary"></span></div>
           <button class="primary" id="save-task">Guardar · 保存</button>
         </div>
         <div id="today-tasks" class="feed"></div>
       </section>
 
       <section id="view-history" class="view"><div class="section-head"><div><p class="eyebrow">MIRAR ATRÁS · 回顾</p><h2>Historial · 历史记录</h2></div><input id="history-date" type="date"></div><div id="history-tasks" class="feed"></div></section>
-      <section id="view-vocabulary" class="view"><div class="section-head"><div><p class="eyebrow">LISTA COMPARTIDA · 共享清单</p><h2>Vocabulario · 词汇</h2></div><button class="primary" id="new-word">＋ Palabra · 添加词汇</button></div><div id="word-form" class="card compact hidden"><input id="word-term" placeholder="Palabra · 单词"><select id="word-language"><option value="es">Español</option><option value="zh">中文</option></select><input id="word-pronunciation" placeholder="Pronunciación lenta · 慢速发音"><input id="word-pinyin" placeholder="Pinyin（中文必填）"><input id="word-image" type="file" accept="image/*"><button class="primary" id="save-word">Guardar · 保存</button></div><div id="word-list" class="grid-list"></div></section>
+      <section id="view-vocabulary" class="view"><div class="section-head"><div><p class="eyebrow">LISTA COMPARTIDA · 共享清单</p><h2>Vocabulario · 词汇</h2></div><button class="primary" id="new-word">＋ Palabra · 添加词汇</button></div><div id="word-form" class="card compact hidden"><input id="word-term" placeholder="Palabra · 单词"><select id="word-language"><option value="es">Español</option><option value="zh">中文</option></select><input id="word-pinyin" placeholder="Pinyin（中文必填）"><div class="media-box"><span class="media-title">Pronunciación · 发音</span><div class="file-row"><button type="button" class="record-btn" id="word-record">● Grabar · 录音</button><span id="word-record-time" class="record-time">00:00</span><label class="file-chip">↑ Archivo · 上传<input id="word-audio" type="file" accept="audio/*" hidden></label></div><audio id="word-record-preview" class="record-preview hidden" controls></audio></div><label class="file-chip camera-chip">▧ Cámara o foto · 拍照或图片<input id="word-image" type="file" accept="image/*" capture="environment" hidden></label><button class="primary" id="save-word">Guardar · 保存</button></div><div id="word-list" class="grid-list"></div></section>
       <section id="view-resources" class="view"><div class="section-head"><div><p class="eyebrow">BIBLIOTECA · 资料库</p><h2>Recursos · 学习资源</h2></div><button class="primary" id="new-resource">＋ Recurso · 添加资源</button></div><div id="resource-form" class="card compact hidden"><input id="resource-title" placeholder="Título · 标题"><input id="resource-url" type="url" placeholder="https://"><select id="resource-category"><option>Libro · 书籍</option><option>Video · 视频</option><option>Herramienta · 工具</option><option>Otro · 其他</option></select><textarea id="resource-note" placeholder="Nota · 备注"></textarea><button class="primary" id="save-resource">Guardar · 保存</button></div><div id="resource-list" class="grid-list"></div></section>
       <section id="view-dashboard" class="view"><div class="section-head"><div><p class="eyebrow">PASO A PASO · 一步一步</p><h2>Constancia · 学习坚持</h2><p>Comparar para animarnos, no para competir. · 对比是为了互相鼓励，不是比赛。</p></div></div><div id="stats" class="stats"></div><div class="card"><h3>Últimos 14 días · 最近14天</h3><div id="heatmap" class="heatmap"></div></div></section>
     </main>
