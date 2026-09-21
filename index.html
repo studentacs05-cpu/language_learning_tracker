@@ -7,13 +7,18 @@
   <meta name="theme-color" content="#1f5c4a">
   <title>Entre palabras · 词语之间</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%231f5c4a'/%3E%3Cpath d='M8 10h16M8 16h10M8 22h7' stroke='%23fff6df' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=4">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="config.js" defer></script>
-  <script src="app.js" defer></script>
+  <script src="config.js?v=4" defer></script>
+  <script src="app.js?v=4" defer></script>
 </head>
 <body>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <dialog id="image-lightbox" class="image-lightbox" aria-label="Imagen completa · 完整图片">
+    <button id="close-lightbox" class="lightbox-close" aria-label="Cerrar · 关闭">×</button>
+    <img id="lightbox-image" alt="">
+    <p id="lightbox-caption"></p>
+  </dialog>
   <section id="auth-view" class="auth-shell">
     <div class="auth-card">
       <div class="mark">词 · Ñ</div>
